@@ -5,7 +5,7 @@ import tensorflow as tf
 import argparse
 import time
 import os
-from six.moves import cPickle
+import pickle as cPickle
 
 from utils import TextLoader
 from model import Model
@@ -18,7 +18,7 @@ def main():
                        help='number of words to sample')
     parser.add_argument('--prime', type=str, default=' ',
                        help='prime text')
-    parser.add_argument('--pick', type=int, default=1,
+    parser.add_argument('--pick', type=int, default=2,
                        help='1 = weighted pick, 2 = beam search pick')
     parser.add_argument('--width', type=int, default=4,
                        help='width of the beam search')

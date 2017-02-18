@@ -5,14 +5,14 @@ import tensorflow as tf
 import argparse
 import time
 import os
-from six.moves import cPickle
+import pickle as cPickle
 
 from utils import TextLoader
 from model import Model
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_dir', type=str, default='data/tinyshakespeare',
+    parser.add_argument('--data_dir', type=str, default='data/wikivoyage',
                        help='data directory containing input.txt')
     parser.add_argument('--log_dir', type=str, default='logs',
                        help='directory containing tensorboard logs')
@@ -89,7 +89,7 @@ def train(args):
     train_writer = tf.summary.FileWriter(args.log_dir)
     gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=args.gpu_mem)
 
-    with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
+    with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, device_count = {'GPU': 0})) as sess:
         train_writer.add_graph(sess.graph)
         tf.global_variables_initializer().run()
         saver = tf.train.Saver(tf.global_variables())

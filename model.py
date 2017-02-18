@@ -22,9 +22,9 @@ class Model():
         else:
             raise Exception("model type not supported: {}".format(args.model))
 
-        cell = cell_fn(args.rnn_size)
+        cell = cell_fn(args.rnn_size, state_is_tuple=True)
 
-        self.cell = cell = rnn.MultiRNNCell([cell] * args.num_layers)
+        self.cell = cell = rnn.MultiRNNCell([cell] * args.num_layers, state_is_tuple=True)
 
         self.input_data = tf.placeholder(tf.int32, [args.batch_size, args.seq_length])
         self.targets = tf.placeholder(tf.int32, [args.batch_size, args.seq_length])
@@ -54,7 +54,7 @@ class Model():
             variable_summaries(softmax_b)
             with tf.device("/cpu:0"):
                 embedding = tf.get_variable("embedding", [args.vocab_size, args.rnn_size])
-                inputs = tf.split(tf.nn.embedding_lookup(embedding, self.input_data), args.seq_length, 1)
+                inputs = tf.split(tf.nn.embedding_lookup(embedding, self.input_data), args.seq_length, axis=1)
                 inputs = [tf.squeeze(input_, [1]) for input_ in inputs]
 
         def loop(prev, _):

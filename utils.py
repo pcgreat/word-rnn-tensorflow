@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import collections
-from six.moves import cPickle
+import pickle as cPickle
 import numpy as np
 import re
 import itertools
